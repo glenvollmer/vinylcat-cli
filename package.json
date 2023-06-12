@@ -18,16 +18,19 @@
   ],
   "dependencies": {
     "@inquirer/prompts": "^2.1.1",
+    "@inquirer/testing": "^2.0.0",
     "@oclif/core": "^2",
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^2.4.7",
-    "@types/inquirer": "^9.0.3"
+    "@types/inquirer": "^9.0.3",
+    "dotenv": "^16.1.4",
+    "mongodb": "5.6"
   },
   "devDependencies": {
     "@oclif/test": "^2.3.22",
     "@types/chai": "^4",
     "@types/mocha": "^9.0.0",
-    "@types/node": "^16.18.34",
+    "@types/node": "^16.18.35",
     "chai": "^4",
     "eslint": "^7.32.0",
     "eslint-config-oclif": "^4",
@@ -60,7 +63,6 @@
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "npm run lint",
     "prepack": "npm run build && oclif manifest && oclif readme",
-    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif readme && git add README.md"
   },
   "engines": {

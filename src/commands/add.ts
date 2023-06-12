@@ -1,9 +1,12 @@
 
 import {Command, ux} from '@oclif/core'
-import select from '@inquirer/select';
+import select from '@inquirer/select'
 import {Record} from '../models/record'
 
+import DBClient from '../modules/mongoClient'
+
 export default class Add extends Command {
+
   static description = 'describe the command here'
 
   static examples = [
@@ -14,16 +17,18 @@ export default class Add extends Command {
 
   static args = {}
 
-  public async run(): Promise<void> {
-    const {args, flags} = await this.parse(Add)
+  private async getRecordInput(): Promise<Record> {
+    // const {args, flags} = await this.parse(Add)
+    // add error handling for each input
+    
     const record = <Record>{};
     
-    record.artist = await ux.prompt('Artist: ')
-    record.album = await ux.prompt('Album Title: ')
-    record.releaseDate = await ux.prompt('Release Year: ')
-    record.pressingDate = await ux.prompt('Pressing Year: ')
-    record.serialNumber = await ux.prompt('Serial Number: ')
-    record.barcode = await ux.prompt('Barcode: ')
+    record.artist = await ux.prompt('Artist')
+    record.album = await ux.prompt('Album Title')
+    record.releaseDate = await ux.prompt('Release Year')
+    record.pressingDate = await ux.prompt('Pressing Year')
+    record.serialNumber = await ux.prompt('Serial Number')
+    record.barcode = await ux.prompt('Barcode')
     
     record.condition = await select(
       {
@@ -42,11 +47,28 @@ export default class Add extends Command {
     )
     
     record.description = await ux.prompt('Description')
+    return record;
+  }
 
+  private async saveRecord(record:Record): Promise<Boolean> {
+    const db = new DBClient();
+    await db.connect();
+
+    const dataAdded = await db.addData(record, 'records');
+    await db.disconnect();
     
-    this.log(`${record.condition}`)
-    // store record in db
+    return dataAdded;
+  }
 
+  public async run(): Promise<void> {
+    const record = await this.getRecordInput();
+    const saved = await this.saveRecord(record);
 
+    if (saved) {
+      this.log(`${record.album} was succesfully added to your catalog`)
+    
+    } else {
+      this.log(`there was an error adding ${record.album} to your catalog`)
+    }
   }
 }
