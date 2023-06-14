@@ -5,7 +5,7 @@ import {Record} from '../models/record'
 import DBClient from '../modules/mongo-client'
 
 export default class Add extends Command {
-  static description = 'add a vinyl record to your catalogue'
+  static description: string = 'add a vinyl record to your catalogue'
   record: Record = <Record>{}
 
   static examples = [
@@ -92,10 +92,10 @@ export default class Add extends Command {
   private async saveRecord(): Promise<boolean> {
     const record: Record = this.record
 
-    const db = new DBClient()
+    const db: DBClient = new DBClient()
     await db.connect()
 
-    const dataAdded = await db.addData(record, 'records')
+    const dataAdded: boolean = await db.addData(record, 'records')
     await db.disconnect()
 
     return dataAdded
@@ -112,7 +112,7 @@ export default class Add extends Command {
   }
 
   private async continueAdd(): Promise<boolean> {
-    const result = await ux.confirm('Add another record?')
+    const result: boolean = await ux.confirm('Add another record?')
     return result
   }
 
@@ -123,7 +123,7 @@ export default class Add extends Command {
     let saved: boolean
 
     if (continuous) {
-      let c = true
+      let c: boolean = true
       
       while (c) {
         await this.getRecordInput()
