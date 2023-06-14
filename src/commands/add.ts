@@ -26,16 +26,28 @@ export default class Add extends Command {
     this.record.album = await ux.prompt('Album Title')
   }
 
-  private async getReleaseDate(): Promise<void> {
-    this.record.releaseDate = await ux.prompt('Release Year')
+  private async getReleaseYear(): Promise<void> {
+    const releaseYearStr: string = await ux.prompt('Release Year')
+    const releaseYear: number = Number(releaseYearStr);
+    this.record.releaseYear = releaseYear
   }
 
-  private async getPressingDate(): Promise<void> {
-    this.record.pressingDate = await ux.prompt('Pressing Year')
+  private async getPressingYear(): Promise<void> {
+    const pressingYearStr: string = await ux.prompt('Pressing Year')
+    const pressingYear: number = Number(pressingYearStr);
+    this.record.pressingYear = pressingYear
   }
 
-  private async getSerialNumber(): Promise<void> {
-    this.record.serialNumber = await ux.prompt('Serial Number')
+  private async getSideAMatrix(): Promise<void> {
+    this.record.sideAMatrix = await ux.prompt('Side A Matrix')
+  }
+  
+  private async getSideBMatrix(): Promise<void> {
+    this.record.sideBMatrix = await ux.prompt('Side B Matrix')
+  }
+
+  private async getCatalogNumber(): Promise<void> {
+    this.record.catalogNumber = await ux.prompt('Catalog Number')
   }
 
   private async getBarcode(): Promise<void> {
@@ -67,9 +79,11 @@ export default class Add extends Command {
   private async getRecordInput(): Promise<void> {
     await this.getArtist()
     await this.getAlbum()
-    await this.getReleaseDate()
-    await this.getPressingDate()
-    await this.getSerialNumber()
+    await this.getReleaseYear()
+    await this.getPressingYear()
+    await this.getSideAMatrix()
+    await this.getSideBMatrix()
+    await this.getCatalogNumber()
     await this.getBarcode()
     await this.getCondition()
     await this.getDescription()
