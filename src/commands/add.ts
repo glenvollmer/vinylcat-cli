@@ -111,6 +111,11 @@ export default class Add extends Command {
     }
   }
 
+  private async continueAdd(): Promise<boolean> {
+    const result = await ux.confirm('Add another record?')
+    return result
+  }
+
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(Add)
     const continuous = flags.continuous
@@ -118,14 +123,16 @@ export default class Add extends Command {
     let saved: boolean
 
     if (continuous) {
-      const c = true
+      let c = true
+      
       while (c) {
         await this.getRecordInput()
         saved = await this.saveRecord()
         this.logRecordStatus(saved)
-
-        // set c to false if user no longer wants to continue adding records
+        c = await this.continueAdd()
+        this.record = <Record>{}
       }
+
     } else {
       await this.getRecordInput()
       saved = await this.saveRecord()
